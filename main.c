@@ -7,19 +7,19 @@
 
 double *input_arr(char*, int*);
 void print_arr(double*, int);
-double *solve(double*, int, int*);
-void out(char*, double*, int);
+double *solve(double*, int, int*, int**);
+void out(char*, double*, int*, int);
 
 int main()
 {
-    int n, newl;
+    int n, newl, *O;
     double *X, *S;
 
     X = input_arr(INPUT, &n);
     print_arr(X, n);
-    S = solve(X, n, &newl);
+    S = solve(X, n, &newl, &O);
     print_arr(S, newl);
-    out(OUTPUT, S, newl);
+    out(OUTPUT, S, O, newl);
 
     return 0;
 }
@@ -61,7 +61,7 @@ void print_arr(double *X, int n)
     printf("\n");
 }
 
-double *solve(double *X, int N, int *outl)
+double *solve(double *X, int N, int *outl, int **O)
 {
     int i, L, lo, hi, mid, newL, k;
     int *P, *M;
@@ -78,7 +78,7 @@ double *solve(double *X, int N, int *outl)
         while(lo <= hi)
         {
             mid = ceil((lo + hi) / 2);
-            if(X[M[mid]] > X[i]) //
+            if(X[M[mid]] >= X[i]) //
                 lo = mid + 1;
             else
                 hi = mid - 1;
@@ -86,6 +86,7 @@ double *solve(double *X, int N, int *outl)
         }
 
         newL = lo;
+
         P[i] = M[newL - 1];
         M[newL] = i;
 
@@ -94,10 +95,13 @@ double *solve(double *X, int N, int *outl)
     }
 
     S = (double*)malloc((int)sizeof(double) * L);
+    *O = (int*)malloc((int)sizeof(int) * L);
 
     k = M[L];
     for(i = L - 1; i >= 0; i--)
     {
+        (*O)[i] = k;
+        //printf("%d\n", O[i]);
         S[i] = X[k];
         k = P[k];
     }
@@ -106,19 +110,19 @@ double *solve(double *X, int N, int *outl)
     return S;
 }
 
-void out(char *filename, double *X, int n)
+void out(char *filename, double *X, int *O, int n)
 {
     int i;
     FILE *out;
 
     if(!(out = fopen(filename, "w")))
     {
-        printf("Input ERROR!\n");
+        printf("Output ERROR!\n");
         return;
     }
 
     for (i = 0; i < n; i++)
-        fprintf(out, "%5.2lf\n", X[i]);
+        fprintf(out, "%d %5.2lf\n", O[i], X[i]);
 
     fclose(out);
 }
