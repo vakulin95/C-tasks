@@ -5,7 +5,7 @@
 #include <time.h>
 
 #define INPUT "data/input.txt"
-#define N 10
+#define N 15
 
 int input(void);
 
@@ -33,7 +33,7 @@ int input(void)
     }
 
     for(i = 0; i < N; i++)
-        fprintf(in, "%2.3lf\n", (rand() % 100) / 10.0);
+        fprintf(in, "%2.3lf\n", (rand() % 1000) / 10.0);
 
     fclose(in);
     return 1;

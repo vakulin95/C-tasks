@@ -7,19 +7,37 @@
 
 double *input_arr(char*, int*);
 void print_arr(double*, int);
-double *solve(double*, int, int*, int**);
+double *solve(double*, int, int*, int**, int);
 void out(char*, double*, int*, int);
 
 int main()
 {
-    int n, newl, *O;
-    double *X, *S;
+    int n, newl_inc, newl_dec, *O_inc, *O_dec;
+    double *X, *S_inc, *S_dec;
 
     X = input_arr(INPUT, &n);
     print_arr(X, n);
-    S = solve(X, n, &newl, &O);
-    print_arr(S, newl);
-    out(OUTPUT, S, O, newl);
+
+    S_inc = solve(X, n, &newl_inc, &O_inc, 1);
+    S_dec = solve(X, n, &newl_dec, &O_dec, 0);
+
+    printf("\nSolution for increasing sequence:\n");
+    print_arr(S_inc, newl_inc);
+    printf("\nSolution for decreasing sequence:\n");
+    print_arr(S_dec, newl_dec);
+
+    if(newl_inc > newl_dec)
+    {
+        printf("\nAnswer: %d\n", n - newl_inc);
+        out(OUTPUT, S_inc, O_inc, newl_inc);
+    }
+    else
+    {
+        printf("\nAnswer: %d\n", n - newl_dec);
+        out(OUTPUT, S_dec, O_dec, newl_dec);
+    }
+
+    out(INPUT, X, NULL, n);
 
     return 0;
 }
@@ -57,11 +75,11 @@ void print_arr(double *X, int n)
     int i;
 
     for(i = 0; i < n; i++)
-        printf("%5.2lf ", X[i]);
+        printf("%.2lf ", X[i]);
     printf("\n");
 }
 
-double *solve(double *X, int N, int *outl, int **O)
+double *solve(double *X, int N, int *outl, int **O, int cas)
 {
     int i, L, lo, hi, mid, newL, k;
     int *P, *M;
@@ -71,28 +89,57 @@ double *solve(double *X, int N, int *outl, int **O)
     M = (int*)calloc((int)sizeof(int), (N + 1));
 
     L = 0;
-    for(i = 0; i < N; i++)
+    if(cas)
     {
-        lo = 1;
-        hi = L;
-        while(lo <= hi)
+        for(i = 0; i < N; i++)
         {
-            mid = ceil((lo + hi) / 2);
-            if(X[M[mid]] >= X[i]) //
-                lo = mid + 1;
-            else
-                hi = mid - 1;
+            lo = 1;
+            hi = L;
+            while(lo <= hi)
+            {
+                mid = ceil((lo + hi) / 2);
+                if(X[M[mid]] <= X[i]) //
+                    lo = mid + 1;
+                else
+                    hi = mid - 1;
 
+            }
+
+            newL = lo;
+
+            P[i] = M[newL - 1];
+            M[newL] = i;
+
+            if(newL > L)
+                L = newL;
         }
-
-        newL = lo;
-
-        P[i] = M[newL - 1];
-        M[newL] = i;
-
-        if(newL > L)
-            L = newL;
     }
+    else
+    {
+        for(i = 0; i < N; i++)
+        {
+            lo = 1;
+            hi = L;
+            while(lo <= hi)
+            {
+                mid = ceil((lo + hi) / 2);
+                if(X[M[mid]] >= X[i]) //
+                    lo = mid + 1;
+                else
+                    hi = mid - 1;
+
+            }
+
+            newL = lo;
+
+            P[i] = M[newL - 1];
+            M[newL] = i;
+
+            if(newL > L)
+                L = newL;
+        }
+    }
+
 
     S = (double*)malloc((int)sizeof(double) * L);
     *O = (int*)malloc((int)sizeof(int) * L);
@@ -121,8 +168,12 @@ void out(char *filename, double *X, int *O, int n)
         return;
     }
 
-    for (i = 0; i < n; i++)
-        fprintf(out, "%d %5.2lf\n", O[i], X[i]);
+    if(O)
+        for (i = 0; i < n; i++)
+            fprintf(out, "%d %.2lf\n", O[i], X[i]);
+    else
+        for (i = 0; i < n; i++)
+            fprintf(out, "%.2lf\n", X[i]);
 
     fclose(out);
 }
