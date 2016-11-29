@@ -6,11 +6,13 @@
 #define W_LEN 100
 
 int input_str(char*, char***, int*, char***, int*);
+void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r);
+int solve(char**, int, char**, int);
 
 int main()
 {
-    char **M1, **M2;
-    int i, N1, N2;
+    char **M1, **M2, **data;
+    int i, N1, N2, r;
 
     if(input_str(INPUT, &M1, &N1, &M2, &N2))
         return 1;
@@ -20,6 +22,16 @@ int main()
     printf("\n");
     for(i = 0; i < N2; i++)
         printf("%s\n", M2[i]);
+    printf("\n");
+
+    solve(M1, N1, M2, N2);
+
+    // r = 1;
+    // data = (char**)malloc((int)sizeof(char*) * r);
+    // for(i = 0; i < r; i++)
+    //     data[i] = (char*)malloc(W_LEN);
+    //
+    // combinationUtil(M1, data, 0, N1 - 1, 0, r);
 
     return 0;
 }
@@ -36,7 +48,7 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
         return 1;
     }
 
-    //Подсчет слов в первой строке
+    //number of words in str 1
     temp = fgetc(in);
     strn1 = 1;
     while(temp != '\n')
@@ -47,7 +59,7 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     }
     //printf("%d\n", strn1);
 
-    //Подсчет слов во второй строке
+    //number of words in str 2
     temp = fgetc(in);
     strn2 = 1;
     while(temp != EOF)
@@ -67,7 +79,7 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     for(i = 0; i < strn2; i++)
         M2[i] = (char*)malloc(W_LEN);
 
-    // Первая строка в массиве
+    // string 1 to array
     temp = fgetc(in);
     i = 0;
     j = 0;
@@ -86,7 +98,7 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
         temp = fgetc(in);
     }
 
-    //Вторая строка в массиве
+    //string 2 to array
     temp = fgetc(in);
     i = 0;
     j = 0;
@@ -115,5 +127,74 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
 
     (*m2) = M2;
     (*n2) = strn2;
+    return 0;
+}
+
+/* arr[]  ---> Input Array
+   data[] ---> Temporary array to store current combination
+   start & end ---> Staring and Ending indexes in arr[]
+   index  ---> Current index in data[]
+   r ---> Size of a combination to be printed */
+void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r)
+{
+    int i;
+
+    // Current combination is ready to be printed, print it
+    if (index == r)
+    {
+        for (int j = 0; j < r; j++)
+            printf("%s ", data[j]);
+        printf("\n");
+        return;
+    }
+
+    // replace index with all possible elements. The condition
+    // "end-i+1 >= r-index" makes sure that including one element
+    // at index will make a combination with remaining elements
+    // at remaining positions
+    for (i = start; i <= end && end - i + 1 >= r - index; i++)
+    {
+        strcpy(data[index], arr[i]);
+        combinationUtil(arr, data, i + 1, end, index + 1, r);
+    }
+}
+
+int solve(char **M1, int N1, char **M2, int N2)
+{
+    int i, j, k, en;
+    char **ENT;
+
+    for(i = 0; i < N2; i++) //loop for M2
+    {
+        en = 0;
+        for(j = 0; j < N1; j++) // loop for M1
+        {
+            if(strstr(M2[i], M1[j]))
+                en++;
+        }
+
+        ENT = (char**)malloc((int)sizeof(char*) * en);
+        for(j = 0; j < en; j++)
+             ENT[j] = (char*)malloc(W_LEN);
+
+        k = 0;
+        for(j = 0; j < N1; j++) // loop for M1
+        {
+            if(strstr(M2[i], M1[j]))
+            {
+                strcpy(ENT[k], M1[j]);
+                k++;
+            }
+        }
+
+        //for(j = 0; j < en; j++)
+            //printf("%s\n", ENT[j]);
+        //printf("\n");
+
+        for(j = 0; j < en; j++)
+            free(ENT[j]);
+        free(ENT);
+    }
+
     return 0;
 }
