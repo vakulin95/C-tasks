@@ -1,2 +1,2 @@
-a bb c
-abbcd
+a aa bb c e d
+acdbb eaabbc bbea wwwaaa

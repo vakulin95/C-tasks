@@ -6,10 +6,10 @@
 #define W_LEN 100
 
 int input_str(char*, char***, int*, char***, int*);
-void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r);
+int combinationUtil(char *arr[], char *data[], char *str, int start, int end, int index, int r);
 int solve(char**, int, char**, int);
 void swap(char **x, char **y);
-void permute(char *a[], int l, int r);
+int permute(char *a[], char *str, int l, int r);
 
 int main()
 {
@@ -125,7 +125,7 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     return 0;
 }
 
-void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r)
+int combinationUtil(char *arr[], char *data[], char *str, int start, int end, int index, int r)
 {
     /* arr[]  ---> Input Array
        data[] ---> Temporary array to store current combination
@@ -133,9 +133,9 @@ void combinationUtil(char *arr[], char *data[], int start, int end, int index, i
        index  ---> Current index in data[]
        r ---> Size of a combination to be printed */
 
-    int i, n;
+    int i, n1, n2, Y;
     char *buff;
-    buff = (char*)malloc(W_LEN * 32);
+
 
     // // Current combination is ready to be printed, print it
     // if (index == r)
@@ -160,13 +160,36 @@ void combinationUtil(char *arr[], char *data[], int start, int end, int index, i
 
     if (index == r)
     {
-        // printf("\n-------------\n");
-        // for (int j = 0; j < r; j++)
-        //      printf("%s ", data[j]);
-        // printf("\n-------------\n");
+        buff = (char*)malloc(W_LEN * 32);
+        strcpy(buff, "");
+        for (int j = 0; j < r; j++)
+            buff = strcat(buff, data[j]);
 
-        permute(data, 0, r - 1);
-        return;
+        n1 = strlen(buff);
+        n2 = strlen(str);
+
+        if(n1 == n2)
+        {
+            // printf("\n-------------\n");
+            // for (int j = 0; j < r; j++)
+            //      printf("%s ", data[j]);
+            // printf("\n-------------\n");
+
+            if(permute(data, str, 0, r - 1))
+            {
+                printf("IN\n");
+                free(buff);
+                return 1;
+            }
+            // else
+            //     return 0;
+        }
+        // else
+        //     return 0;
+
+
+        free(buff);
+        return 0;
     }
 
     // replace index with all possible elements. The condition
@@ -176,14 +199,22 @@ void combinationUtil(char *arr[], char *data[], int start, int end, int index, i
     for (i = start; i <= end && end - i + 1 >= r - index; i++)
     {
         strcpy(data[index], arr[i]);
-        combinationUtil(arr, data, i + 1, end, index + 1, r);
+        // if(combinationUtil(arr, data, str, i + 1, end, index + 1, r))
+        // {
+        //     //printf("IN\n");
+        //     return 1;
+        // }
+        Y = combinationUtil(arr, data, str, i + 1, end, index + 1, r);
     }
+
+    return Y;
 }
 
 int solve(char **M1, int N1, char **M2, int N2)
 {
-    int i, j, k, en, r;
+    int i, j, k, en, r, control;
     char **ENT, **data;
+    control = 0;
 
     for(i = 0; i < N2; i++) //loop for M2
     {
@@ -192,6 +223,11 @@ int solve(char **M1, int N1, char **M2, int N2)
         {
             if(strstr(M2[i], M1[j]))
                 en++;
+        }
+        if(!en)
+        {
+            printf("!control\n word: %s\n", M2[i]);
+            return 1;
         }
 
         ENT = (char**)malloc((int)sizeof(char*) * en);
@@ -218,13 +254,29 @@ int solve(char **M1, int N1, char **M2, int N2)
             for(j = 0; j < r; j++)
                 data[j] = (char*)malloc(W_LEN);
 
-            combinationUtil(ENT, data, 0, en - 1, 0, r);
+            control = combinationUtil(ENT, data, M2[i], 0, en - 1, 0, r);
+            if(control)
+            {
+                printf("%d\n", control);
+                for(j = 0; j < r; j++)
+                    free(data[j]);
+                free(data);
+                break;
+            }
 
             for(j = 0; j < r; j++)
                 free(data[j]);
             free(data);
         }
         printf("\n");
+        if(!control)
+        {
+            for(j = 0; j < en; j++)
+                free(ENT[j]);
+            free(ENT);
+            printf("!control\n word: %s\n", M2[i]);
+            return 1;
+        }
 
         for(j = 0; j < en; j++)
             free(ENT[j]);
@@ -265,16 +317,31 @@ void swap(char **x, char **y)
 //    }
 // }
 
-void permute(char *a[], int l, int r)
+int permute(char *a[], char *str, int l, int r)
 {
    int i, j, n;
    char temp[W_LEN];
+   char *buff;
 
    if (l == r)
    {
-        for(i = 0; i <= r; i++)
-            printf("%s ", a[i]);
-        printf("\n");
+       buff = (char*)malloc(W_LEN * 32);
+       strcpy(buff, "");
+        for(j = 0; j <= r; j++)
+            buff = strcat(buff, a[j]);
+
+        //printf("%s\n", buff);
+        if(!strcmp(buff, str))
+        {
+            free(buff);
+            return 1;
+        }
+
+        free(buff);
+
+        // for(i = 0; i <= r; i++)
+        //     printf("%s |", a[i]);
+        // printf("\n");
    }
    else
    {
@@ -293,11 +360,17 @@ void permute(char *a[], int l, int r)
         //printf("%s %s\n", a[l], a [i]);
         //printf("////////////\n");
 
-        permute(a, l + 1, r);
+        if(permute(a, str, l + 1, r))
+        {
+
+            return 1;
+        }
 
         strcpy(temp, a[l]);
         strcpy(a[l], a[i]);
         strcpy(a[i], temp);
        }
    }
+
+   return 0;
 }
