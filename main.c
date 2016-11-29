@@ -8,6 +8,8 @@
 int input_str(char*, char***, int*, char***, int*);
 void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r);
 int solve(char**, int, char**, int);
+void swap(char **x, char **y);
+void permute(char *a[], int l, int r);
 
 int main()
 {
@@ -25,13 +27,6 @@ int main()
     printf("\n");
 
     solve(M1, N1, M2, N2);
-
-    // r = 1;
-    // data = (char**)malloc((int)sizeof(char*) * r);
-    // for(i = 0; i < r; i++)
-    //     data[i] = (char*)malloc(W_LEN);
-    //
-    // combinationUtil(M1, data, 0, N1 - 1, 0, r);
 
     return 0;
 }
@@ -130,21 +125,47 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     return 0;
 }
 
-/* arr[]  ---> Input Array
-   data[] ---> Temporary array to store current combination
-   start & end ---> Staring and Ending indexes in arr[]
-   index  ---> Current index in data[]
-   r ---> Size of a combination to be printed */
 void combinationUtil(char *arr[], char *data[], int start, int end, int index, int r)
 {
-    int i;
+    /* arr[]  ---> Input Array
+       data[] ---> Temporary array to store current combination
+       start & end ---> Staring and Ending indexes in arr[]
+       index  ---> Current index in data[]
+       r ---> Size of a combination to be printed */
 
-    // Current combination is ready to be printed, print it
+    int i, n;
+    char *buff;
+    buff = (char*)malloc(W_LEN * 32);
+
+    // // Current combination is ready to be printed, print it
+    // if (index == r)
+    // {
+    //     for (int j = 0; j < r; j++)
+    //         printf("%s ", data[j]);
+    //     printf("\n");
+    //     return;
+    // }
+
+    // if (index == r)
+    // {
+    //     for (int j = 0; j < r; j++)
+    //         buff = strcat(buff, data[j]);
+    //
+    //     n = strlen(buff);
+    //     permute(buff, 0, n - 1);
+    //
+    //     printf("%s\n", buff);
+    //     return;
+    // }
+
     if (index == r)
     {
-        for (int j = 0; j < r; j++)
-            printf("%s ", data[j]);
-        printf("\n");
+        // printf("\n-------------\n");
+        // for (int j = 0; j < r; j++)
+        //      printf("%s ", data[j]);
+        // printf("\n-------------\n");
+
+        permute(data, 0, r - 1);
         return;
     }
 
@@ -161,8 +182,8 @@ void combinationUtil(char *arr[], char *data[], int start, int end, int index, i
 
 int solve(char **M1, int N1, char **M2, int N2)
 {
-    int i, j, k, en;
-    char **ENT;
+    int i, j, k, en, r;
+    char **ENT, **data;
 
     for(i = 0; i < N2; i++) //loop for M2
     {
@@ -187,9 +208,23 @@ int solve(char **M1, int N1, char **M2, int N2)
             }
         }
 
-        //for(j = 0; j < en; j++)
-            //printf("%s\n", ENT[j]);
-        //printf("\n");
+        // for(j = 0; j < en; j++)
+        //     printf("%s\n", ENT[j]);
+        // printf("\n");
+
+        for(r = 1; r <= en; r++)
+        {
+            data = (char**)malloc((int)sizeof(char*) * r);
+            for(j = 0; j < r; j++)
+                data[j] = (char*)malloc(W_LEN);
+
+            combinationUtil(ENT, data, 0, en - 1, 0, r);
+
+            for(j = 0; j < r; j++)
+                free(data[j]);
+            free(data);
+        }
+        printf("\n");
 
         for(j = 0; j < en; j++)
             free(ENT[j]);
@@ -197,4 +232,72 @@ int solve(char **M1, int N1, char **M2, int N2)
     }
 
     return 0;
+}
+
+/* Function to swap values at two pointers */
+void swap(char **x, char **y)
+{
+    char temp[W_LEN];
+
+    strcpy(temp, *x);
+    strcpy(*x, *y);
+    strcpy(*y, temp);
+}
+
+/* Function to print permutations of string
+   This function takes three parameters:
+   1. String
+   2. Starting index of the string
+   3. Ending index of the string. */
+// void permute(char *a, int l, int r)
+// {
+//    int i;
+//    if (l == r)
+//      printf("%s\n", a);
+//    else
+//    {
+//        for (i = l; i <= r; i++)
+//        {
+//           swap((a+l), (a+i));
+//           permute(a, l+1, r);
+//           swap((a+l), (a+i)); //backtrack
+//        }
+//    }
+// }
+
+void permute(char *a[], int l, int r)
+{
+   int i, j, n;
+   char temp[W_LEN];
+
+   if (l == r)
+   {
+        for(i = 0; i <= r; i++)
+            printf("%s ", a[i]);
+        printf("\n");
+   }
+   else
+   {
+       for (i = l; i <= r; i++)
+       {
+        //   swap(((*a) + l), ((*a) + i));
+        //   permute(a, l + 1, r);
+        //   swap(((*a) + l), ((*a) + i)); //backtrack
+
+        //printf("%s %s\n", a[l], a [i]);
+
+        strcpy(temp, a[l]);
+        strcpy(a[l], a[i]);
+        strcpy(a[i], temp);
+
+        //printf("%s %s\n", a[l], a [i]);
+        //printf("////////////\n");
+
+        permute(a, l + 1, r);
+
+        strcpy(temp, a[l]);
+        strcpy(a[l], a[i]);
+        strcpy(a[i], temp);
+       }
+   }
 }
