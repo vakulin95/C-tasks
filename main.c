@@ -17,7 +17,7 @@ int main()
     F1 = input_text(INPUT1, &N1);
     F2 = input_text(INPUT2, &N2);
 
-    printf("Answer: ");
+    printf("\nAnswer: ");
     if(solve(F1, N1, F2, N2))
         printf("YES\n");
     else
