@@ -6,14 +6,14 @@
 #define W_LEN 100
 
 int input_str(char*, char***, int*, char***, int*);
-int combinationUtil(char *arr[], char *data[], char *str, int start, int end, int index, int r);
+int combination(char**, char**, char*, int, int, int, int);
 int solve(char**, int, char**, int);
-int permute(char *a[], char *str, int l, int r);
+int permute(char**, char*, int, int);
 
 int main()
 {
-    char **M1, **M2, **data;
-    int i, N1, N2, r;
+    char **M1, **M2;
+    int N1, N2;
 
     if(input_str(INPUT, &M1, &N1, &M2, &N2))
         return 1;
@@ -36,7 +36,6 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
         return 1;
     }
 
-    //number of words in str 1
     temp = fgetc(in);
     strn1 = 1;
     while(temp != '\n')
@@ -46,7 +45,6 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
         temp = fgetc(in);
     }
 
-    //number of words in str 2
     temp = fgetc(in);
     strn2 = 1;
     f = 1;
@@ -76,7 +74,6 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     for(i = 0; i < strn2; i++)
         M2[i] = (char*)malloc(W_LEN);
 
-    // string 1 to array
     temp = fgetc(in);
     i = 0;
     j = 0;
@@ -95,7 +92,6 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
         temp = fgetc(in);
     }
 
-    //string 2 to array
     temp = fgetc(in);
     i = 0;
     j = 0;
@@ -124,18 +120,11 @@ int input_str(char *filename, char ***m1, int *n1, char ***m2, int *n2)
     return 0;
 }
 
-int combinationUtil(char *arr[], char *data[], char *str, int start, int end, int index, int r)
+int combination(char *arr[], char *data[], char *str, int start, int end, int index, int r)
 {
-    /* arr[]  ---> Input Array
-       data[] ---> Temporary array to store current combination
-       start & end ---> Staring and Ending indexes in arr[]
-       index  ---> Current index in data[]
-       r ---> Size of a combination to be printed */
-
     int i, n1, n2, Y;
     char *buff;
 
-    // Current combination is ready to be checked
     if (index == r)
     {
         buff = (char*)malloc(W_LEN * 32);
@@ -164,14 +153,10 @@ int combinationUtil(char *arr[], char *data[], char *str, int start, int end, in
         return 0;
     }
 
-    // replace index with all possible elements. The condition
-    // "end-i+1 >= r-index" makes sure that including one element
-    // at index will make a combination with remaining elements
-    // at remaining positions
     for (i = start; i <= end && end - i + 1 >= r - index; i++)
     {
         strcpy(data[index], arr[i]);
-        Y = combinationUtil(arr, data, str, i + 1, end, index + 1, r);
+        Y = combination(arr, data, str, i + 1, end, index + 1, r);
     }
 
     return Y;
@@ -230,7 +215,7 @@ int solve(char **M1, int N1, char **M2, int N2)
             for(j = 0; j < r; j++)
                 data[j] = (char*)malloc(W_LEN);
 
-            control = combinationUtil(ENT, data, M2[i], 0, en - 1, 0, r);
+            control = combination(ENT, data, M2[i], 0, en - 1, 0, r);
             if(control)
             {
                 for(j = 0; j < r; j++)
@@ -262,12 +247,7 @@ int solve(char **M1, int N1, char **M2, int N2)
 
 int permute(char *a[], char *str, int l, int r)
 {
-    /* Function to print permutations of string
-       This function takes three parameters:
-       1. String
-       2. Starting index of the string
-       3. Ending index of the string. */
-   int i, j, n;
+   int i, j;
    char temp[W_LEN];
    char *buff;
 
