@@ -44,7 +44,7 @@ int main()
 
 double *input_arr(char *filename, int *n)
 {
-    int i, j, N;
+    int i, N;
     double *A, buf;
     FILE *in;
 
