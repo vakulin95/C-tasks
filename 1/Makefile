@@ -1,15 +1,15 @@
 CFLAGS = -c -Wall
 
-all: built run
+all: built run clean
 
 built: main.o
-	gcc main.o -o main.out
+	@gcc main.o -o main.out
 
 main.o: main.c
-	gcc $(CFLAGS) main.c
+	@gcc $(CFLAGS) main.c
 
 run:
-	./main.out
+	@./main.out
 
 clean:
-	rm -rf *.out *.o
+	@rm -rf *.out *.o
