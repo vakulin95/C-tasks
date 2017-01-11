@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define INPUT "data/input.txt"
-#define OUTPUT "data/out.txt"
+#define INPUT "data/input.dat"
+#define OUTPUT "data/out.dat"
 
 double *input_arr(char*, int*);
 void print_arr(double*, int);

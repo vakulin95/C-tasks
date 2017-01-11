@@ -1,20 +1,15 @@
-//Заполнение input.txt
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define INPUT "data/input.txt"
+#define INPUT "data/input.dat"
 #define N 10
 
 int input(void);
 
 int main()
 {
-
     input();
-
-    printf("finish!\n");
     return 0;
 }
 
