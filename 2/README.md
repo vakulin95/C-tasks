@@ -8,7 +8,7 @@ There are two text files. Determine, if the second file can be produced by rearr
 
 ### Run
 
-* Run `make` to launch the progect
+* Run `make` to launch the project
 
 ### Info
 

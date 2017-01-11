@@ -8,7 +8,7 @@ The text file consists of **N** lines, each of which contains **N** decimal numb
 
 ### Run
 
-* Run `make` to launch the progect
+* Run `make` to launch the project
 
 ### Info
 

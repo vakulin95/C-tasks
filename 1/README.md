@@ -8,7 +8,7 @@ The text file consists of two lines. Determine, are there any words in the secon
 
 ### Run
 
-* Run `make` to launch the progect
+* Run `make` to launch the project
 
 ### Info
 
