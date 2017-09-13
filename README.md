@@ -6,7 +6,9 @@ In this repo you can find some programming tasks which realized with C language.
 
 ## Projects
 
-1. [Сoncatenation](https://github.com/vakulin95/C-tasks/tree/master/1)
-2. [Lines](https://github.com/vakulin95/C-tasks/tree/master/2)
-3. [Equation](https://github.com/vakulin95/C-tasks/tree/master/3)
-4. [Monotonic sequence](https://github.com/vakulin95/C-tasks/tree/master/4)
+* [Сoncatenation](https://github.com/vakulin95/C-tasks/tree/master/1)
+* [Lines](https://github.com/vakulin95/C-tasks/tree/master/2)
+* [Equation](https://github.com/vakulin95/C-tasks/tree/master/3)
+* [Monotonic sequence](https://github.com/vakulin95/C-tasks/tree/master/4)
+* [Algorithms and data structures](https://github.com/vakulin95/C-tasks/tree/master/Algo)
+* [Kernighan and ritchie exercise solutions](https://github.com/vakulin95/C-tasks/tree/master/K&R)
