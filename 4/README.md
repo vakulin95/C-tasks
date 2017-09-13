@@ -10,7 +10,7 @@ There are some lines of decimal numbers in the text file, separated by spaces. F
 
 * Run `make` to launch the project
 * Run `make fill` to generate input sequence
-* Run 'make plot' to plot the sequences
+* Run `make plot` to plot the sequences
 
 If you want to change quantity of generated decimals change **N** value in [fill.c](https://github.com/vakulin95/C-tasks/blob/master/4/fill.c) file.
 
