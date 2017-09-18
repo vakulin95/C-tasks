@@ -1,6 +1,6 @@
 ### [500 Data Structures and Algorithms practice problems and their solutions](https://techiedelight.quora.com/500-Data-Structures-and-Algorithms-practice-problems-and-their-solutions)
 
-- [Array](https://github.com/vakulin95/C-tasks/quora.com/Array)
+- [Array](https://github.com/vakulin95/C-tasks/tree/master/quora.com/Array)
 - Backtracking
 - Binary
 - Binary Tree
