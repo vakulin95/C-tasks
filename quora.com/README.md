@@ -3,8 +3,7 @@
 - [Array](https://github.com/vakulin95/C-tasks/tree/master/quora.com/Array)
 - Backtracking
 - [Binary](https://github.com/vakulin95/C-tasks/tree/master/quora.com/Binary)
-- Binary Tree
-- Binary Search Tree (BST)
+- [Binary Tree](https://github.com/vakulin95/C-tasks/tree/master/quora.com/Binary-Tree)
 - Divide & Conquer
 - Dynamic Programming
 - Linked List
