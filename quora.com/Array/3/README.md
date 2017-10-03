@@ -1,6 +1,6 @@
 ### Problem
 
-[Selection sort | Iterative & Recursive](http://www.techiedelight.com/selection-sort-iterative-recursive/)
+[Insertion sort | Iterative & Recursive](http://www.techiedelight.com/insertion-sort-iterative-recursive/)
 
 ### Progect using
 

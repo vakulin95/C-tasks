@@ -7,7 +7,7 @@
 #define DEF_UB          100      // Max value in array
 
 void sort_int(int *arr);
-void sort_rec(int *arr, int start);
+void sort_rec(int *arr, int start, int finish);
 void print_arr(int *arr);
 void swap(int *x1, int *x2);
 int check(int *arr);
@@ -27,7 +27,7 @@ int main()
     print_arr(array);
 
     // sort_int(array);
-    sort_rec(array, DEF_ARR_LEN);
+    sort_rec(array, 0, DEF_ARR_LEN);
 
     print_arr(array);
 
@@ -39,42 +39,33 @@ int main()
 void sort_int(int *arr)
 {
     size_t i, j;
-    int min;
 
-    for(i = 0; i < DEF_ARR_LEN - 1; i++)
+    for(i = 1; i < DEF_ARR_LEN; i++)
     {
-        min = i;
-        for(j = i + 1; j < DEF_ARR_LEN; j++)
+        j = i;
+        while(j > 0 && arr[j] < arr[j - 1])
         {
-            if(arr[j] < arr[min])
-            {
-                min = j;
-            }
+            swap(arr + j, arr + j - 1);
+            j--;
         }
-
-        swap(arr + i, arr + min);
     }
 }
 
-void sort_rec(int *arr, int len)
+void sort_rec(int *arr, int start, int finish)
 {
     size_t i;
-    int min;
 
-    min = 0;
-    for(i = 1; i < len; i++)
+    if(start < finish)
     {
-        if(arr[i] < arr[min])
+        i = start;
+        while(i > 0 && arr[i] < arr[i - 1])
         {
-            min = i;
+            swap(arr + i, arr + i - 1);
+            i--;
         }
-    }
 
-    swap(arr, arr + min);
 
-    if(len > 1)
-    {
-        sort_rec(arr + 1, len - 1);
+        sort_rec(arr, start + 1, finish);
     }
 
     return;
